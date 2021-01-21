@@ -31,23 +31,11 @@ int main(int argc, char ** argv){
 	if (argc < 3){
 		cerr << "Incorrect number of arugments. Instead use:\n\t./code [outputFile] [MC/DATA] [inputFiles] \n\n";
 		cerr << "\t\t[outputFile] = ____.root\n";
-		cerr << "\t\t[<MC,DATA,MIXED> = <0, 1, 2> \n";
+		cerr << "\t\t[<MC,DATA> = <0, 1> \n";
 		cerr << "\t\t[inputFile] = ____.root ____.root ____.root ...\n\n";
 		return -1;
 	}
 	int MC_DATA_OPT = atoi(argv[2]);
-
-	// Conditions for a final accepted event electron
-	TCut ePID 	= Form("eHit->getPID() == %i",					ECUT_PID);
-	TCut eCharge 	= Form("eHit->getCharge() == %i",				ECUT_charge); 
-	TCut eEoP	= Form("eHit->getEoP() > %f && eHit->getEoP() < %f",		ECUT_EoP_min,		ECUT_EoP_max);
-	TCut eEpcal	= Form("eHit->getEpcal() > %f",					ECUT_Epcal_min);
-	TCut eVW	= Form("eHit->getV() > %f && eHit->getW() > %f",		ECUT_V_min,		ECUT_W_min);
-	TCut eVtx	= Form("eHit->getVtz() > %f && eHit->getVtz() < %f",		ECUT_vtx_min,		ECUT_vtx_max);
-	TCut eMom	= Form("eHit->getMomentum() > %f && eHit->getMomentum() < %f",	ECUT_pE_min,		ECUT_pE_max);
-	TCut eQ2	= Form("eHit->getQ2() > %f && eHit->getQ2() < %f",		ECUT_Q2_min,		ECUT_Q2_max);
-	TCut eW		= Form("eHit->getW2() > %f",					ECUT_W2_min);
-	TCut inclusive	= ePID && eCharge && eEoP && eEpcal && eVW && eVtx && eMom && eQ2 && eW;
 
 	// Conditions for a final accepted event neutron - signal or background
 	TCut nGood	= Form("goodneutron == %i",					NCUT_goodneutron);
@@ -58,22 +46,13 @@ int main(int argc, char ** argv){
 		nEdep	= Form("nHits[nleadindex]->getPmtLadc() > %f",			NCUT_Edep*SimAdcToMeVee);
 	else if( MC_DATA_OPT == 1)
 		nEdep	= Form("nHits[nleadindex]->getEdep() > %f",			NCUT_Edep*DataAdcToMeVee);
-	TCut nThetaNQ	= Form("tag[nleadindex]->getThetaNQ() > %f && tag[nleadindex]->getThetaNQ() < %f",NCUT_THETANQ_min,NCUT_THETANQ_max);
-	TCut tagged 	= inclusive && nGood && nLeadIdx && nStatus && nEdep && nThetaNQ;
+	TCut neutron 	= nGood && nLeadIdx && nStatus && nEdep;
 
-	// Conditions for a final accepted event neutron in signal region
-	TCut nToF	= Form("nHits[nleadindex]->getTofFadc() > %f",					NCUT_Tofabove0);
-	TCut nPn	= Form("tag[nleadindex]->getMomentumN().Mag() > %f && tag[nleadindex]->getMomentumN().Mag() < %f", NCUT_Pn_min, NCUT_Pn_max );
-	TCut nPnNaN	= Form("tag[nleadindex]->getMomentumN().Mag() == tag[nleadindex]->getMomentumN().Mag()");
-	TCut nWp	= Form("tag[nleadindex]->getWp() > %f && tag[nleadindex]->getWp() < %f",	NCUT_Wp_min,	NCUT_Wp_max);
-	TCut nAs	= Form("tag[nleadindex]->getAs() > %f && tag[nleadindex]->getAs() < %f",	NCUT_As_min,	NCUT_As_max);
-	TCut tagged_signal = tagged && nToF && nPn && nPnNaN && nWp && nAs;
-	
 	// Final TCut:
-	TString cut = Form("%s",tagged_signal.GetTitle());
+	TString cut = Form("%s",neutron.GetTitle());
 
 	// Load input files
-	TChain* inTree = new TChain("tagged");
+	TChain* inTree = new TChain("neutrons");
 	for( int i = 3 ; i < argc; i++ ){
 		cout << "Adding file " << argv[i] << endl;
 		inTree->Add(argv[i]);
@@ -87,7 +66,7 @@ int main(int argc, char ** argv){
 
 	// get background normalization level for this neutron PID
 	TH1D * hToF_bac = new TH1D("hToF_bac","hToF_bac",1000,-25,75);
-	inTree->Draw("nHits[nleadindex]->getTofFadc() / (nHits[nleadindex]->getDL().Mag()/100.) >> hToF_bac",tagged);
+	inTree->Draw("nHits[nleadindex]->getTofFadc() / (nHits[nleadindex]->getDL().Mag()/100.) >> hToF_bac",cut);
 	TVector3 bacnorm;
 	if( MC_DATA_OPT == 1 ){
 		TFitResultPtr fit = (TFitResultPtr)hToF_bac->Fit("pol0","QESR","",-20,0);
@@ -104,11 +83,6 @@ int main(int argc, char ** argv){
 		double background_counts = norm_per_bin * nBins;
 	
 		bacnorm.SetXYZ(background_counts,0,0);
-	}
-	if( MC_DATA_OPT == 2 ){
-		int nEvents = hToF_bac->Integral();
-
-		bacnorm.SetXYZ(nEvents,0,0);
 	}
 
 

@@ -86,29 +86,44 @@ int main(int argc, char ** argv){
 
 
 	// get background normalization level for this neutron PID
-	TH1D * hToF_bac = new TH1D("hToF_bac","hToF_bac",1000,-25,75);
-	inTree->Draw("nHits[nleadindex]->getTofFadc() / (nHits[nleadindex]->getDL().Mag()/100.) >> hToF_bac",tagged);
+	TH1D * hToF_bac = NULL;
 	TVector3 bacnorm;
-	if( MC_DATA_OPT == 1 ){
-		TFitResultPtr fit = (TFitResultPtr)hToF_bac->Fit("pol0","QESR","",-20,0);
-		double norm_per_bin = fit->Parameter(0);
-			// Given our momentum max and min, solve for bins in ToF/m
-		double beta_min = 1./sqrt(1.+ pow(mN/NCUT_Pn_min,2));
-		double beta_max = 1./sqrt(1.+ pow(mN/NCUT_Pn_max,2));
-			// max beta = min ToF and vice versa
-		double TofpM_max = 1./(cAir*beta_min)*100;
-		double TofpM_min = 1./(cAir*beta_max)*100;
-		int TofpM_min_bin = hToF_bac->FindBin( TofpM_min );
-		int TofpM_max_bin = hToF_bac->FindBin( TofpM_max );
-		int nBins = (TofpM_max_bin - TofpM_min_bin); 	
-		double background_counts = norm_per_bin * nBins;
-	
-		bacnorm.SetXYZ(background_counts,0,0);
-	}
-	if( MC_DATA_OPT == 2 ){
-		int nEvents = hToF_bac->Integral();
+	if( MC_DATA_OPT == 1 ){ // if this is data file
+		
+		// Use the data file to get the number of counts in the background region
+		// and rescale it by the region sizes of Signal and Background.
+		hToF_bac = new TH1D("hToF_bac","hToF_bac",8000,-100,300);
+		TCut background_time = Form("nHits[nleadindex]->getTof() > %f && nHits[nleadindex]->getTof() < %f",
+						NCUT_BACK_Tof_min , NCUT_BACK_Tof_max );
+		inTree->Draw("nHits[nleadindex]->getTof()  >> hToF_bac",tagged && background_time);
 
-		bacnorm.SetXYZ(nEvents,0,0);
+		// Now we need to rescale this by the amount of bunches in the signal region:
+		int nSignalBunches 	= (NCUT_Tof_max - NCUT_Tof_min)/BEAM_BUNCH;
+		int nBkgrdBunches 	= (NCUT_BACK_Tof_max - NCUT_BACK_Tof_min)/BEAM_BUNCH;
+
+		bacnorm.SetXYZ( hToF_bac->Integral() * nSignalBunches/nBkgrdBunches , 0 , 0 );
+
+		//TFitResultPtr fit = (TFitResultPtr)hToF_bac->Fit("pol0","QESR","",-20,0);
+		//double norm_per_bin = fit->Parameter(0);
+		//	// Given our momentum max and min, solve for bins in ToF/m
+		//double beta_min = 1./sqrt(1.+ pow(mN/NCUT_Pn_min,2));
+		//double beta_max = 1./sqrt(1.+ pow(mN/NCUT_Pn_max,2));
+		//	// max beta = min ToF and vice versa
+		//double TofpM_max = 1./(cAir*beta_min)*100;
+		//double TofpM_min = 1./(cAir*beta_max)*100;
+		//int TofpM_min_bin = hToF_bac->FindBin( TofpM_min );
+		//int TofpM_max_bin = hToF_bac->FindBin( TofpM_max );
+		//int nBins = (TofpM_max_bin - TofpM_min_bin); 	
+		//double background_counts = norm_per_bin * nBins;
+	
+		//bacnorm.SetXYZ(background_counts,0,0);
+	}
+
+	if( MC_DATA_OPT == 2 ){ // if this is mixed file for background
+		// Grab the number of mixed events we have created
+		double N_mixed		= inTree->GetEntries();
+		
+		bacnorm.SetXYZ( N_mixed , 0 , 0 );
 	}
 
 
@@ -128,12 +143,11 @@ int main(int argc, char ** argv){
 
 	} // end loop over events
 
-
+	cout << "writing stuff to file:\n";
 	// Write and close
 	outFile->cd();
 	outTree->Write();
 	bacnorm.Write("bacnorm");	
-	hToF_bac->Write();
 	outFile->Close();
 	return 0;
 }
