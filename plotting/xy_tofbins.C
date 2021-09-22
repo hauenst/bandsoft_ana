@@ -61,15 +61,15 @@ void xy_tofbins(TString inDat, TString inBac, TString inSim){
 	c_xy_plot->Divide(2,3);
 
 	c_xy_plot->cd(1);
-	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below_dat","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeDat->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below_dat","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot->cd(2);
-	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below2_dat","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeDat->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below2_dat","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot->cd(3);
-	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_peak_dat","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
+	inTreeDat->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_peak_dat","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
 	c_xy_plot->cd(4);
-	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
+	inTreeDat->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
 	c_xy_plot->cd(5);
-	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above2_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
+	inTreeDat->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above2_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
 
 
 	c_xy_plot->SaveAs("xy_distribution_data_tofcuts.pdf");
@@ -80,15 +80,15 @@ void xy_tofbins(TString inDat, TString inBac, TString inSim){
 	c_xy_plot_bg->Divide(2,3);
 
 	c_xy_plot_bg->cd(1);
-	inTreeBac->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below_bac","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeBac->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below_bac","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot_bg->cd(2);
-	inTreeBac->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below2_bac","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeBac->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below2_bac","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot_bg->cd(3);
-	inTreeBac->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_peak_bac","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
+	inTreeBac->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_peak_bac","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
 	c_xy_plot_bg->cd(4);
-	inTreeBac->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above_bac","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
+	inTreeBac->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above_bac","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
 	c_xy_plot_bg->cd(5);
-	inTreeBac->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above2_bac","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
+	inTreeBac->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above2_bac","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
 
 
 	c_xy_plot_bg->SaveAs("xy_distribution_background_tofcuts.pdf");
@@ -98,15 +98,15 @@ void xy_tofbins(TString inDat, TString inBac, TString inSim){
 	c_xy_plot_sim->Divide(2,3);
 
 	c_xy_plot_sim->cd(1);
-	inTreeSim->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below_sim","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeSim->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below_sim","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot_sim->cd(2);
-	inTreeSim->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below2_sim","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
+	inTreeSim->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_below2_sim","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5","COLZ");
 	c_xy_plot_sim->cd(3);
-	inTreeSim->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_peak_sim","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
+	inTreeSim->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_peak_sim","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5","COLZ");
 	c_xy_plot_sim->cd(4);
-	inTreeSim->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above_sim","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
+	inTreeSim->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above_sim","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5","COLZ");
 	c_xy_plot_sim->cd(5);
-	inTreeSim->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above2_sim","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
+	inTreeSim->Draw("nHits[nleadindex]->getY():nHits[nleadindex]->getX() >> xy_tof_above2_sim","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5","COLZ");
 
 
 	c_xy_plot_sim->SaveAs("xy_distribution_simulation_tofcuts.pdf");
