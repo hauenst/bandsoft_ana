@@ -1,4 +1,4 @@
-void tofpm_edep_study(TString inDat, TString inBac, TString inSim){
+void xy_tofbins(TString inDat, TString inBac, TString inSim){
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
@@ -20,85 +20,46 @@ void tofpm_edep_study(TString inDat, TString inBac, TString inSim){
 	inTreeBac->SetWeight( datnorm->X() / bacnorm->X() );
 
 	// Define histograms we want to plot:
-	TH1D * tofpm_dat 	= new TH1D("tofpm_dat","tofpm_dat"	,40,0,20);
-	TH1D * tofpm_bac 	= new TH1D("tofpm_bac","tofpm_bac"	,40,0,20);
-	TH1D * tofpm_sim5 	= new TH1D("tofpm_sim5","tofpm_sim5"	,40,0,20);
-	TH1D * tofpm_sim8 	= new TH1D("tofpm_sim8","tofpm_sim8"	,40,0,20);
-	TH1D * tofpm_sim10 	= new TH1D("tofpm_sim10","tofpm_sim10"	,40,0,20);
-	TH1D * tofpm_sim12 	= new TH1D("tofpm_sim12","tofpm_sim12"	,40,0,20);
-	TH1D * tofpm_sim15 	= new TH1D("tofpm_sim15","tofpm_sim15"	,40,0,20);
-	TH1D * tofpm_sim20 	= new TH1D("tofpm_sim20","tofpm_sim20"	,40,0,20);
+	TH1D * xy_tof_below_dat 	= new TH1D("xy_tof_below_dat","xy_tof 26.5-30.5 (data) "	,40,-50,110,105,-210,210);
+	TH1D * xy_tof_below2_dat 	= new TH1D("xy_tof_below2_dat","xy_tof 22.5-30.5 (data) "	,40,-50,110,105,-210,210);
+	TH1D * xy_tof_peak_dat 	= new TH1D("xy_tof_peak_dat","xy_tof 30.5-34.5 (data) "	,40,-50,110,105,-210,210);
+	TH1D * xy_tof_above_dat 	= new TH1D("xy_tof_above_dat","xy_tof 34.5-38.5 (data) "	,40,-50,110,105,-210,210);
+	TH1D * xy_tof_above2_dat 	= new TH1D("xy_tof_above2_dat","xy_tof 34.5-42.5 (data) "	,40,-50,110,105,-210,210);
+	TH1D * tof_data	= new TH1D("tof_data","tof_data",60,0,60);
+	TH1D * tof_bac 	= new TH1D("tof_bac","tof_bac"	,60,0,60);
+	TH1D * tof_sim 	= new TH1D("tof_sim","tof_sim"	,60,0,60);
+
+
+	// Draw the full tof distribution
+	TCanvas * c_tof_plot = new TCanvas("c_tof_plot","",800,600);
+	c_tof_plot->Divide(2,2);
+	c_tof_plot->cd(1);
+	inTreeDat->Draw("nHits[nleadindex]->getTof() >> tofpm_dat");
+	c_tof_plot->cd(2);
+	inTreeBac->Draw("nHits[nleadindex]->getTof() >> tofpm_bac");
+	c_tof_plot->cd(3);
+	inTreeSim->Draw("nHits[nleadindex]->getTof() >> tofpm_sim",	"nHits[nleadindex]->getEdep()/1E4 > 5");
+
+	//label1D(tofpm_dat,tofpm_bac,"ToF [ns]","Counts");
+	//c_tof_plot->SaveAs("full_tof_prebs.pdf");
 
 	// Draw the full tofpm distribution
-	TCanvas * c_tofpm_prebs = new TCanvas("c_tofpm_prebs","",800,600);
-	c_tofpm_prebs->cd(1);
-	inTreeDat->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_dat");
-	inTreeBac->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_bac");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim5",	"nHits[nleadindex]->getEdep()/1E4 > 5");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim8",	"nHits[nleadindex]->getEdep()/1E4 > 8");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim10",	"nHits[nleadindex]->getEdep()/1E4 > 10");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim12",	"nHits[nleadindex]->getEdep()/1E4 > 12");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim15",	"nHits[nleadindex]->getEdep()/1E4 > 15");
-	inTreeSim->Draw("nHits[nleadindex]->getTof()/(nHits[nleadindex]->getDL().Mag()/100) >> tofpm_sim20",	"nHits[nleadindex]->getEdep()/1E4 > 20");
-	
-	label1D(tofpm_dat,tofpm_bac,"ToF/dL [ns/m]","Counts");
-	c_tofpm_prebs->SaveAs("full_tofpm_prebs.pdf");
+	TCanvas * c_xy_plot = new TCanvas("c_xy_plot","",800,600);
+	c_xy_plot->Divide(2,3);
 
-	// Draw the full tofpm distribution
-	TCanvas * c_tofpm = new TCanvas("c_tofpm","",800,600);
-	c_tofpm->Divide(2,3);
-
-	c_tofpm->cd(1);
-	tofpm_dat->Add(tofpm_bac,-1);
-	double data_integral 	= tofpm_dat->Integral( 	 );
-	double sim5_integral	= tofpm_sim5->Integral(  );
-	double sim8_integral	= tofpm_sim8->Integral(  );
-	double sim10_integral	= tofpm_sim10->Integral(  );
-	double sim12_integral	= tofpm_sim12->Integral(  );
-	double sim15_integral	= tofpm_sim15->Integral(  );
-	double sim20_integral	= tofpm_sim20->Integral(  );
-
-	double scale5 	= data_integral / sim5_integral ;
-	double scale8 	= data_integral / sim8_integral ;
-	double scale10 	= data_integral / sim10_integral;
-	double scale12 	= data_integral / sim12_integral;
-	double scale15 	= data_integral / sim15_integral;
-	double scale20 	= data_integral / sim20_integral;
-
-	tofpm_sim5->Scale(  scale5	);
-	tofpm_sim8->Scale(  scale8	);
-	tofpm_sim10->Scale( scale10	);
-	tofpm_sim12->Scale( scale12	);
-	tofpm_sim15->Scale( scale15	);
-	tofpm_sim20->Scale( scale20	);
-	
-	c_tofpm->cd(1);
-	tofpm_sim5	->SetTitle(Form("Full distribution, E_{sim} > 5 , C_{sim} = %f",scale5	));
-	label1D(tofpm_dat,tofpm_sim5,"ToF/dL [ns/m]","Counts");
-
-	c_tofpm->cd(2);
-	tofpm_sim8	->SetTitle(Form("Full distribution, E_{sim} > 8 , C_{sim} = %f",scale8	));
-	label1D(tofpm_dat,tofpm_sim8,"ToF/dL [ns/m]","Counts");
-
-	c_tofpm->cd(3);
-	tofpm_sim10->SetTitle(Form("Full distribution, E_{sim} > 10 , C_{sim} = %f",scale10	));
-	label1D(tofpm_dat,tofpm_sim10,"ToF/dL [ns/m]","Counts");
-
-	c_tofpm->cd(4);
-	tofpm_sim12->SetTitle(Form("Full distribution, E_{sim} > 12 , C_{sim} = %f",scale12	));
-	label1D(tofpm_dat,tofpm_sim12,"ToF/dL [ns/m]","Counts");
-
-	c_tofpm->cd(5);
-	tofpm_sim15->SetTitle(Form("Full distribution, E_{sim} > 15 , C_{sim} = %f",scale15	));
-	label1D(tofpm_dat,tofpm_sim15,"ToF/dL [ns/m]","Counts");
-
-	c_tofpm->cd(6);
-	tofpm_sim20->SetTitle(Form("Full distribution, E_{sim} > 20 , C_{sim} = %f",scale20	));
-	label1D(tofpm_dat,tofpm_sim20,"ToF/dL| [ns/m]","Counts");
+	c_xy_plot->cd(1);
+	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below_dat","nHits[nleadindex]->getTof() > 26.5 && nHits[nleadindex]->getTof() <= 30.5");
+	c_xy_plot->cd(2);
+	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_below2_dat","nHits[nleadindex]->getTof() > 22.5 && nHits[nleadindex]->getTof() <= 30.5");
+	c_xy_plot->cd(3);
+	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_peak_dat","nHits[nleadindex]->getTof() > 30.5 && nHits[nleadindex]->getTof() <= 34.5");
+	c_xy_plot->cd(4);
+	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 38.5");
+	c_xy_plot->cd(5);
+	inTreeDat->Draw("nHits[nleadindex]->getX():nHits[nleadindex]->getY() >> xy_tof_above2_dat","nHits[nleadindex]->getTof() > 34.5 && nHits[nleadindex]->getTof() <= 42.5");
 
 
-
-	c_tofpm->SaveAs("full_tofpm_edep.pdf");
+	//c_xy_plot->SaveAs("xy_distribution_data_tofcuts.pdf");
 
 
 
@@ -123,7 +84,7 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	double max1 = data->GetMaximum()*1.1;
 	double max2 = sim->GetMaximum()*1.1;
 	sim->GetYaxis()->SetRangeUser(0,max(max1,max2));
-	
+
 	sim->GetXaxis()->SetTitle(xlabel);
 	sim->GetYaxis()->SetTitle(ylabel);
 
