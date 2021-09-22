@@ -36,11 +36,11 @@ void xy_tofbins(TString inDat, TString inBac, TString inSim){
 	TH2D * xy_tof_above2_bac = new TH2D("xy_tof_above2_bac","xy_tof 34.5-42.5 ns (bg) "       ,50,-100,100,40,-50,110);
 
 	TH1D * tof_sim 	= new TH1D("tof_sim","tof_sim"	,60,0,60);
-	TH2D * xy_tof_below_sim  = new TH2D("xy_tof_below_dat","xy_tof 26.5-30.5 ns (sim) "        ,50,-100,100,40,-50,110);
-	TH2D * xy_tof_below2_sim = new TH2D("xy_tof_below2_dat","xy_tof 22.5-30.5 ns (sim) "       ,50,-100,100,40,-50,110);
-	TH2D * xy_tof_peak_sim 	 = new TH2D("xy_tof_peak_dat","xy_tof 30.5-34.5 ns (sim) " 				 ,50,-100,100,40,-50,110);
-	TH2D * xy_tof_above_sim  = new TH2D("xy_tof_above_dat","xy_tof 34.5-38.5 ns (sim) "        ,50,-100,100,40,-50,110);
-	TH2D * xy_tof_above2_sim = new TH2D("xy_tof_above2_dat","xy_tof 34.5-42.5 ns (sim) "       ,50,-100,100,40,-50,110);
+	TH2D * xy_tof_below_sim  = new TH2D("xy_tof_below_sim","xy_tof 26.5-30.5 ns (sim) "        ,50,-100,100,40,-50,110);
+	TH2D * xy_tof_below2_sim = new TH2D("xy_tof_below2_sim","xy_tof 22.5-30.5 ns (sim) "       ,50,-100,100,40,-50,110);
+	TH2D * xy_tof_peak_sim 	 = new TH2D("xy_tof_peak_sim","xy_tof 30.5-34.5 ns (sim) " 				 ,50,-100,100,40,-50,110);
+	TH2D * xy_tof_above_sim  = new TH2D("xy_tof_above_sim","xy_tof 34.5-38.5 ns (sim) "        ,50,-100,100,40,-50,110);
+	TH2D * xy_tof_above2_sim = new TH2D("xy_tof_above2_sim","xy_tof 34.5-42.5 ns (sim) "       ,50,-100,100,40,-50,110);
 
 
 	// Draw the full tof distribution
