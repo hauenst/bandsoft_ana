@@ -20,11 +20,11 @@ void xy_tofbins(TString inDat, TString inBac, TString inSim){
 	inTreeBac->SetWeight( datnorm->X() / bacnorm->X() );
 
 	// Define histograms we want to plot:
-	TH1D * xy_tof_below_dat 	= new TH1D("xy_tof_below_dat","xy_tof 26.5-30.5 (data) "	,40,-50,110,105,-210,210);
-	TH1D * xy_tof_below2_dat 	= new TH1D("xy_tof_below2_dat","xy_tof 22.5-30.5 (data) "	,40,-50,110,105,-210,210);
-	TH1D * xy_tof_peak_dat 	= new TH1D("xy_tof_peak_dat","xy_tof 30.5-34.5 (data) "	,40,-50,110,105,-210,210);
-	TH1D * xy_tof_above_dat 	= new TH1D("xy_tof_above_dat","xy_tof 34.5-38.5 (data) "	,40,-50,110,105,-210,210);
-	TH1D * xy_tof_above2_dat 	= new TH1D("xy_tof_above2_dat","xy_tof 34.5-42.5 (data) "	,40,-50,110,105,-210,210);
+	TH2D * xy_tof_below_dat 	= new TH2D("xy_tof_below_dat","xy_tof 26.5-30.5 (data) "	,40,-50,110,105,-210,210);
+	TH2D * xy_tof_below2_dat 	= new TH2D("xy_tof_below2_dat","xy_tof 22.5-30.5 (data) "	,40,-50,110,105,-210,210);
+	TH2D * xy_tof_peak_dat 	= new TH2D("xy_tof_peak_dat","xy_tof 30.5-34.5 (data) "	,40,-50,110,105,-210,210);
+	TH2D * xy_tof_above_dat 	= new TH2D("xy_tof_above_dat","xy_tof 34.5-38.5 (data) "	,40,-50,110,105,-210,210);
+	TH2D * xy_tof_above2_dat 	= new TH2D("xy_tof_above2_dat","xy_tof 34.5-42.5 (data) "	,40,-50,110,105,-210,210);
 	TH1D * tof_data	= new TH1D("tof_data","tof_data",60,0,60);
 	TH1D * tof_bac 	= new TH1D("tof_bac","tof_bac"	,60,0,60);
 	TH1D * tof_sim 	= new TH1D("tof_sim","tof_sim"	,60,0,60);
