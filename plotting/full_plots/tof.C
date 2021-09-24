@@ -1,4 +1,4 @@
-void q(TString inDat, TString inBac, TString inSim){
+void tof(TString inDat, TString inBac, TString inSim){
 
 	TCut pNcut = "tag[nleadindex]->getMomentumN().Mag() < 0.32 && tag[nleadindex]->getMomentumN().Mag() > 0.25 && !(nHits[nleadindex]->getSector()==1 && nHits[nleadindex]->getComponent()==1) && nHits[nleadindex]->getEdep()>10";
 	TCut pNcut_sim = "tag_smeared[nleadindex]->getMomentumN().Mag() < 0.32 && tag_smeared[nleadindex]->getMomentumN().Mag() > 0.25 && !(nHits[nleadindex]->getSector()==1 && nHits[nleadindex]->getComponent()==1) && nHits[nleadindex]->getEdep()>10";
@@ -24,22 +24,22 @@ void q(TString inDat, TString inBac, TString inSim){
 	// Get and set the background normalization
 	TVector3 * datnorm = (TVector3*)inFileDat->Get("bacnorm");
 	TVector3 * bacnorm = (TVector3*)inFileBac->Get("bacnorm");
-	inTreeBac->SetWeight( datnorm->X() / bacnorm->X() );
+	inTreeBac->SetWeight( datnorm->Z() / bacnorm->X() );
 
 	// Define histograms we want to plot:
-	TH1D ** q_dat = new TH1D*[3];
-	TH1D ** q_bac = new TH1D*[3];
-	TH1D ** q_sim = new TH1D*[3];
+	TH1D ** tof_dat = new TH1D*[3];
+	TH1D ** tof_bac = new TH1D*[3];
+	TH1D ** tof_sim = new TH1D*[3];
 	for(int i = 0 ; i < 3 ; i++){
-		q_dat[i] = new TH1D(Form("q_dat_%i",i),"",25,3.5,8.5);
-		q_bac[i] = new TH1D(Form("q_bac_%i",i),"",25,3.5,8.5);
-		q_sim[i] = new TH1D(Form("q_sim_%i",i),"",25,3.5,8.5);
+		tof_dat[i] = new TH1D(Form("tof_dat_%i",i),"",80,12,52);
+		tof_bac[i] = new TH1D(Form("tof_bac_%i",i),"",80,12,52);
+		tof_sim[i] = new TH1D(Form("tof_sim_%i",i),"",80,12,52);
 	}
 
-	// Draw the full q distribution
-	TCanvas * c_q = new TCanvas("c_q","",800,600);
+	// Draw the full tof distribution
+	TCanvas * c_tof = new TCanvas("c_tof","",800,600);
 	double sim_scaling = 0;
-	c_q->Divide(3,2);
+	c_tof->Divide(3,2);
 	for( int i = 0 ; i < 3 ; i++){
 		TString pTtitle = "Full pT";
 		if( i == 1 ){
@@ -49,29 +49,29 @@ void q(TString inDat, TString inBac, TString inSim){
 			pTtitle = "High pT";
 		}
 
-		c_q->cd(i+1);
-		inTreeDat->Draw(Form("tag[nleadindex]->getMomentumQ().Mag() >> q_dat_%i",i),pNcut && pTcut[i]);
-		inTreeBac->Draw(Form("tag[nleadindex]->getMomentumQ().Mag() >> q_bac_%i",i),pNcut && pTcut[i]);
-		inTreeSim->Draw(Form("tag_smeared[nleadindex]->getMomentumQ().Mag() >> q_sim_%i",i),pNcut_sim && pTcut_sim[i]);
+		c_tof->cd(i+1);
+		inTreeDat->Draw(Form("nHits[nleadindex]->getTof() >> tof_dat_%i",i),pNcut && pTcut[i]);
+		inTreeBac->Draw(Form("nHits[nleadindex]->getTof() >> tof_bac_%i",i),pNcut && pTcut[i]);
+		inTreeSim->Draw(Form("nHits[nleadindex]->getTof() >> tof_sim_%i",i),pNcut_sim && pTcut_sim[i]);
 
 		// Background subraction
-		q_dat[i]->Add(q_bac[i],-1);
+		tof_dat[i]->Add(tof_bac[i],-1);
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)
-		double full_simnorm = (double)q_dat[i]->Integral() / q_sim[i]->Integral();
+		double full_simnorm = (double)tof_dat[i]->Integral() / tof_sim[i]->Integral();
 		if( i == 0 ) sim_scaling = full_simnorm;
-		q_sim[i]->Scale( full_simnorm );
+		tof_sim[i]->Scale( full_simnorm );
 		
 		
-		q_sim[i]->SetTitle(pTtitle+Form(", C_{sim} = %f, ",full_simnorm));
-		label1D(q_dat[i],q_sim[i],"|q| [GeV/c]","Counts");
+		tof_sim[i]->SetTitle(pTtitle+Form(", C_{sim} = %f, ",full_simnorm));
+		label1D(tof_dat[i],tof_sim[i],"ToF [ns]","Counts");
 
-		c_q->cd(4+i);
-		label1D_ratio(q_dat[i],q_sim[i],"|q| [GeV/c]","Data/Sim",0,2);
+		c_tof->cd(4+i);
+		label1D_ratio(tof_dat[i],tof_sim[i],"ToF [ns]","Data/Sim",0,2);
 	}
 
 
-	c_q->SaveAs("full_q.pdf");
+	c_tof->SaveAs("full_tof.pdf");
 
 	return;
 }
