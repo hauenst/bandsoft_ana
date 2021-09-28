@@ -13,7 +13,7 @@ void xB_inc(TString inDat, TString inSim){
 	TTree * inTreeSim = (TTree*) inFileSim->Get("electrons");
 	TChain * inTreeDat = new TChain("electrons");
 
-	inTreeDat->AddFile(inDat);
+	inTreeDat->Add(inDat);
 
 	// Define histograms we want to plot:
 	TH1D ** xB_dat = new TH1D*[1];
