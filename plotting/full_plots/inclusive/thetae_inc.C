@@ -59,10 +59,20 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	data->SetMarkerStyle(8);
 	data->SetMarkerSize(1);
 	data->SetStats(0);
+	data->GetYaxis()->SetTitleSize(0.05);
+  data->GetYaxis()->SetTitleOffset(0.95);
+  data->GetYaxis()->SetLabelSize(0.05);
+  data->GetXaxis()->SetTitleSize(0.05);
+  data->GetXaxis()->SetLabelSize(0.05);
 
 	sim->SetLineColor(2);
 	sim->SetLineWidth(1);
 	sim->SetStats(0);
+	sim->GetYaxis()->SetTitleSize(0.05);
+	sim->GetYaxis()->SetTitleOffset(0.95);
+	sim->GetYaxis()->SetLabelSize(0.05);
+	sim->GetXaxis()->SetTitleSize(0.05);
+	sim->GetXaxis()->SetLabelSize(0.05);
 
 	sim->Draw("hist");
 	data->Draw("p,same");

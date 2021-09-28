@@ -70,10 +70,20 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	data->SetMarkerStyle(8);
 	data->SetMarkerSize(1);
 	data->SetStats(0);
+	data->GetYaxis()->SetTitleSize(0.05);
+  data->GetYaxis()->SetTitleOffset(0.95);
+  data->GetYaxis()->SetLabelSize(0.05);
+  data->GetXaxis()->SetTitleSize(0.05);
+  data->GetXaxis()->SetLabelSize(0.05);
 
 	sim->SetLineColor(2);
 	sim->SetLineWidth(1);
 	sim->SetStats(0);
+	sim->GetYaxis()->SetTitleSize(0.05);
+	sim->GetYaxis()->SetTitleOffset(0.95);
+	sim->GetYaxis()->SetLabelSize(0.05);
+	sim->GetXaxis()->SetTitleSize(0.05);
+	sim->GetXaxis()->SetLabelSize(0.05);
 
 	sim->Draw("hist");
 	data->Draw("p,same");
@@ -104,6 +114,11 @@ void label1D_ratio(TH1D* data, TH1D* sim, TString xlabel, TString ylabel, double
 	data_copy->SetLineColor(1);
 	data_copy->SetLineWidth(3);
 	//data_copy->SetStats(0);
+	data_copy->GetYaxis()->SetTitleSize(0.05);
+	data_copy->GetYaxis()->SetTitleOffset(0.95);
+	data_copy->GetYaxis()->SetLabelSize(0.05);
+	data_copy->GetXaxis()->SetTitleSize(0.05);
+	data_copy->GetXaxis()->SetLabelSize(0.05);
 
 	sim_copy->SetLineColor(9);
 	sim_copy->SetLineWidth(3);
