@@ -30,8 +30,8 @@ void thetae_inc(TString inDat, TString inSim){
 	for( int i = 0 ; i < 1 ; i++){
 
 		c_thetae->cd(i+1);
-		inTreeDat->Draw(Form("eHit->getMomentumE().Theta()*180./TMath::Pi() >> thetae_dat_%i",i));
-		inTreeSim->Draw(Form("eHit->getMomentumE().Theta()*180./TMath::Pi() >> thetae_sim_%i",i));
+		inTreeDat->Draw(Form("eHit->getTheta()*180./TMath::Pi() >> thetae_dat_%i",i));
+		inTreeSim->Draw(Form("eHit->getTheta()*180./TMath::Pi() >> thetae_sim_%i",i));
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)

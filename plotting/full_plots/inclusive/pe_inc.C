@@ -30,8 +30,8 @@ void pe_inc(TString inDat, TString inSim){
 	for( int i = 0 ; i < 1 ; i++){
 
 		c_pe->cd(i+1);
-		inTreeDat->Draw(Form("eHit->getMomentumE().Mag() >> pe_dat_%i",i));
-		inTreeSim->Draw(Form("eHit->getMomentumE().Mag() >> pe_sim_%i",i));
+		inTreeDat->Draw(Form("eHit->getMomentum() >> pe_dat_%i",i));
+		inTreeSim->Draw(Form("eHit->getMomentum() >> pe_sim_%i",i));
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)

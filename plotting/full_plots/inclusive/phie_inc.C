@@ -29,8 +29,8 @@ void phie_inc(TString inDat, TString inSim){
 	for( int i = 0 ; i < 1 ; i++){
 
 		c_phie->cd(i+1);
-		inTreeDat->Draw("eHit->getMomentumE().Phi()*180./TMath::Pi() >> phie_dat");
-		inTreeSim->Draw("eHit->getMomentumE().Phi()*180./TMath::Pi() >> phie_sim");
+		inTreeDat->Draw("eHit->getPhi()*180./TMath::Pi() >> phie_dat");
+		inTreeSim->Draw("eHit->getPhi()*180./TMath::Pi() >> phie_sim");
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)
