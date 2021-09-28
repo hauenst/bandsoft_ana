@@ -48,7 +48,8 @@ void phie_inc(TString inDat, TString inSim){
 
 
 	c_phie->SaveAs("full_phie_inc.pdf");
-
+	inTreeDat->SaveAs("data_phie_inc.root");
+	inTreeSim->SaveAs("sim_phie_inc.root");
 	return;
 }
 

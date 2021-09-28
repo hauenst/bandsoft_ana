@@ -49,7 +49,8 @@ void omega_inc(TString inDat, TString inSim){
 
 
 	c_omega->SaveAs("full_omega-inc.pdf");
-
+	inTreeDat->SaveAs("data_omega_inc.root");
+	inTreeSim->SaveAs("sim_omega_inc.root");
 	return;
 }
 

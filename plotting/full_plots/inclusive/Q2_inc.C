@@ -60,7 +60,8 @@ void Q2_inc(TString inDat, TString inSim){
 
 
 	c_Q2->SaveAs("full_Q2-inc.pdf");
-
+	inTreeDat->SaveAs("data_Q2_inc.root");
+	inTreeSim->SaveAs("sim_Q2_inc.root");
 	return;
 }
 

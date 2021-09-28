@@ -49,7 +49,8 @@ void pe_inc(TString inDat, TString inSim){
 
 
 	c_pe->SaveAs("full_pe-inc.pdf");
-
+	inTreeDat->SaveAs("data_pe_inc.root");
+	inTreeSim->SaveAs("sim_pe_inc.root");
 	return;
 }
 

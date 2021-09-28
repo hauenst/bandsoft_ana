@@ -49,7 +49,8 @@ void xB_inc(TString inDat, TString inSim){
 
 
 	c_xB->SaveAs("full_xB-inc.pdf");
-
+	inTreeDat->SaveAs("data_xB_inc.root");
+	inTreeSim->SaveAs("sim_xB_inc.root");
 	return;
 }
 
