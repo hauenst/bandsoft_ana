@@ -1,7 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
-#option defines beam energy setting 1 = 10.2, 2 = 10.4, 3 = 10.6
-option=$1
+#$1 defines beam energy setting 1 = 10.2, 2 = 10.4, 3 = 10.6
 if [ $1 == 1 ]
 then
   echo "Inclusive comparison plots for 10.2 GeV"
