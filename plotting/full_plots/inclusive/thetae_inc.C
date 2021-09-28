@@ -1,4 +1,4 @@
-void xB_inc(TString inDat, TString inSim){
+void thetae_inc(TString inDat, TString inSim){
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
@@ -16,39 +16,39 @@ void xB_inc(TString inDat, TString inSim){
 	inTreeDat->AddFile(inDat);
 
 	// Define histograms we want to plot:
-	TH1D ** xB_dat = new TH1D*[1];
-	TH1D ** xB_sim = new TH1D*[1];
+	TH1D ** thetae_dat = new TH1D*[1];
+	TH1D ** thetae_sim = new TH1D*[1];
 	for(int i = 0 ; i < 1 ; i++){
-		xB_dat[i] = new TH1D(Form("xB_dat_%i",i),"",30,0.1,0.7);
-		xB_sim[i] = new TH1D(Form("xB_sim_%i",i),"",30,0.1,0.7);
+		thetae_dat[i] = new TH1D(Form("thetae_dat_%i",i),"",23,7,30);
+		thetae_sim[i] = new TH1D(Form("thetae_sim_%i",i),"",23,7,30);
 	}
 
-	// Draw the full xB distribution
-	TCanvas * c_xB = new TCanvas("c_xB","",800,600);
+	// Draw the full thetae distribution
+	TCanvas * c_thetae = new TCanvas("c_thetae","",800,600);
 	double sim_scaling = 0;
-	c_xB->Divide(1,2);
+	c_thetae->Divide(1,2);
 	for( int i = 0 ; i < 1 ; i++){
 
-		c_xB->cd(i+1);
-		inTreeDat->Draw(Form("eHit->getXb() >> xB_dat_%i",i));
-		inTreeSim->Draw(Form("eHit->getXb() >> xB_sim_%i",i));
+		c_thetae->cd(i+1);
+		inTreeDat->Draw(Form("eHit->getMomentumE().Theta()*180./TMath::Pi() >> thetae_dat_%i",i));
+		inTreeSim->Draw(Form("eHit->getMomentumE().Theta()*180./TMath::Pi() >> thetae_sim_%i",i));
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)
-		double full_simnorm = (double)xB_dat[0]->Integral() / xB_sim[0]->Integral();
+		double full_simnorm = (double)thetae_dat[0]->Integral() / thetae_sim[0]->Integral();
 		if( i == 0 ) sim_scaling = full_simnorm;
-		xB_sim[i]->Scale( sim_scaling );
+		thetae_sim[i]->Scale( sim_scaling );
 
 
-		xB_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
-		label1D(xB_dat[i],xB_sim[i],"x_{B}","Counts");
+		thetae_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
+		label1D(thetae_dat[i],thetae_sim[i],"#theta_{e}","Counts");
 
-		c_xB->cd(2+i);
-		label1D_ratio(xB_dat[i],xB_sim[i],"x_{B}","Data/Sim",0.8,1.2);
+		c_thetae->cd(2+i);
+		label1D_ratio(thetae_dat[i],thetae_sim[i],"#theta_{e}","Data/Sim",0.8,1.2);
 	}
 
 
-	c_xB->SaveAs("full_xB-inc.pdf");
+	c_thetae->SaveAs("full_thetae-inc.pdf");
 
 	return;
 }

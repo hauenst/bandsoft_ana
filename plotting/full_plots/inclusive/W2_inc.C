@@ -5,16 +5,19 @@ void W2_inc(TString inDat, TString inSim){
 	void label1D_ratio(TH1D* data, TH1D* sim, TString xlabel, TString ylabel, double ymin , double ymax );
 
 	// Load TFiles
-	TFile * inFileDat = new TFile(inDat);
+	//TFile * inFileDat = new TFile(inDat);
 	TFile * inFileSim = new TFile(inSim);
 
 	// Get the TTrees
-	TTree * inTreeDat = (TTree*) inFileDat->Get("electrons");
+	//TTree * inTreeDat = (TTree*) inFileDat->Get("electrons");
 	TTree * inTreeSim = (TTree*) inFileSim->Get("electrons");
+	TChain * inTreeDat = new TChain("electrons");
+
+	inTreeDat->AddFile(inDat);
 
 	// Define histograms we want to plot:
-	TH1D ** W2_dat = new TH1D*[3];
-	TH1D ** W2_sim = new TH1D*[3];
+	TH1D ** W2_dat = new TH1D*[1];
+	TH1D ** W2_sim = new TH1D*[1];
 	for(int i = 0 ; i < 1 ; i++){
 		W2_dat[i] = new TH1D(Form("W2_dat_%i",i),"",18,2,3.8);
 		W2_sim[i] = new TH1D(Form("W2_sim_%i",i),"",18,2,3.8);
@@ -35,8 +38,8 @@ void W2_inc(TString inDat, TString inSim){
 		double full_simnorm = (double)W2_dat[0]->Integral() / W2_sim[0]->Integral();
 		if( i == 0 ) sim_scaling = full_simnorm;
 		W2_sim[i]->Scale( sim_scaling );
-		
-		
+
+
 		W2_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
 		label1D(W2_dat[i],W2_sim[i],"W [GeV/c^{2}]","Counts");
 
@@ -67,7 +70,7 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	double max1 = data->GetMaximum()*1.1;
 	double max2 = sim->GetMaximum()*1.1;
 	sim->GetYaxis()->SetRangeUser(0,max(max1,max2));
-	
+
 	sim->GetXaxis()->SetTitle(xlabel);
 	sim->GetYaxis()->SetTitle(ylabel);
 
@@ -83,10 +86,10 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 
 void label1D_ratio(TH1D* data, TH1D* sim, TString xlabel, TString ylabel, double ymin , double ymax ){
 	gStyle->SetOptFit(1);
-	
+
 	TH1D * data_copy = (TH1D*) data->Clone();
 	TH1D * sim_copy = (TH1D*) sim->Clone();
-	
+
 	data_copy->SetLineColor(1);
 	data_copy->SetLineWidth(3);
 	//data_copy->SetStats(0);
@@ -105,7 +108,7 @@ void label1D_ratio(TH1D* data, TH1D* sim, TString xlabel, TString ylabel, double
 	line->Draw("same");
 
 	data_copy->GetYaxis()->SetRangeUser(ymin,ymax);
-	
+
 	data_copy->GetXaxis()->SetTitle(xlabel);
 	data_copy->GetYaxis()->SetTitle(ylabel);
 

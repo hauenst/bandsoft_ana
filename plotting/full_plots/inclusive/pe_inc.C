@@ -1,4 +1,4 @@
-void xB_inc(TString inDat, TString inSim){
+void pe_inc(TString inDat, TString inSim){
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
@@ -16,39 +16,39 @@ void xB_inc(TString inDat, TString inSim){
 	inTreeDat->AddFile(inDat);
 
 	// Define histograms we want to plot:
-	TH1D ** xB_dat = new TH1D*[1];
-	TH1D ** xB_sim = new TH1D*[1];
+	TH1D ** pe_dat = new TH1D*[1];
+	TH1D ** pe_sim = new TH1D*[1];
 	for(int i = 0 ; i < 1 ; i++){
-		xB_dat[i] = new TH1D(Form("xB_dat_%i",i),"",30,0.1,0.7);
-		xB_sim[i] = new TH1D(Form("xB_sim_%i",i),"",30,0.1,0.7);
+		pe_dat[i] = new TH1D(Form("pe_dat_%i",i),"",20,3,7);
+		pe_sim[i] = new TH1D(Form("pe_sim_%i",i),"",20,3,7);
 	}
 
-	// Draw the full xB distribution
-	TCanvas * c_xB = new TCanvas("c_xB","",800,600);
+	// Draw the full pe distribution
+	TCanvas * c_pe = new TCanvas("c_pe","",800,600);
 	double sim_scaling = 0;
-	c_xB->Divide(1,2);
+	c_pe->Divide(1,2);
 	for( int i = 0 ; i < 1 ; i++){
 
-		c_xB->cd(i+1);
-		inTreeDat->Draw(Form("eHit->getXb() >> xB_dat_%i",i));
-		inTreeSim->Draw(Form("eHit->getXb() >> xB_sim_%i",i));
+		c_pe->cd(i+1);
+		inTreeDat->Draw(Form("eHit->getMomentumE().Mag() >> pe_dat_%i",i));
+		inTreeSim->Draw(Form("eHit->getMomentumE().Mag() >> pe_sim_%i",i));
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)
-		double full_simnorm = (double)xB_dat[0]->Integral() / xB_sim[0]->Integral();
+		double full_simnorm = (double)pe_dat[0]->Integral() / pe_sim[0]->Integral();
 		if( i == 0 ) sim_scaling = full_simnorm;
-		xB_sim[i]->Scale( sim_scaling );
+		pe_sim[i]->Scale( sim_scaling );
 
 
-		xB_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
-		label1D(xB_dat[i],xB_sim[i],"x_{B}","Counts");
+		pe_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
+		label1D(pe_dat[i],pe_sim[i],"p_{e}","Counts");
 
-		c_xB->cd(2+i);
-		label1D_ratio(xB_dat[i],xB_sim[i],"x_{B}","Data/Sim",0.8,1.2);
+		c_pe->cd(2+i);
+		label1D_ratio(pe_dat[i],pe_sim[i],"p_{e}","Data/Sim",0.8,1.2);
 	}
 
 
-	c_xB->SaveAs("full_xB-inc.pdf");
+	c_pe->SaveAs("full_pe-inc.pdf");
 
 	return;
 }
