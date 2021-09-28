@@ -49,8 +49,8 @@ void W2_inc(TString inDat, TString inSim){
 
 
 	c_W2->SaveAs("full_W2-inc.pdf");
-	inTreeDat->SaveAs("data_W2_inc.root");
-	inTreeSim->SaveAs("sim_W2_inc.root");
+	W2_dat[0]->SaveAs("data_W2_inc.root");
+	W2_sim[0]->SaveAs("sim_W2_inc.root");
 	return;
 }
 

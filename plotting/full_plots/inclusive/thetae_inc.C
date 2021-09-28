@@ -49,8 +49,8 @@ void thetae_inc(TString inDat, TString inSim){
 
 
 	c_thetae->SaveAs("full_thetae-inc.pdf");
-	inTreeDat->SaveAs("data_thetae_inc.root");
-	inTreeSim->SaveAs("sim_thetae_inc.root");
+	thetae_dat[0]->SaveAs("data_thetae_inc.root");
+	thetae_sim[0]->SaveAs("sim_thetae_inc.root");
 	return;
 }
 
