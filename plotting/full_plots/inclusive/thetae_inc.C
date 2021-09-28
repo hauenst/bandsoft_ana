@@ -103,6 +103,11 @@ void label1D_ratio(TH1D* data, TH1D* sim, TString xlabel, TString ylabel, double
 	data_copy->SetLineColor(1);
 	data_copy->SetLineWidth(3);
 	//data_copy->SetStats(0);
+	data_copy->GetYaxis()->SetTitleSize(0.05);
+	data_copy->GetYaxis()->SetTitleOffset(0.95);
+	data_copy->GetYaxis()->SetLabelSize(0.05);
+	data_copy->GetXaxis()->SetTitleSize(0.05);
+	data_copy->GetXaxis()->SetLabelSize(0.05);
 
 	sim_copy->SetLineColor(9);
 	sim_copy->SetLineWidth(3);
