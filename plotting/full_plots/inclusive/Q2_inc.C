@@ -1,7 +1,18 @@
-//#include "constants.h"
-//#include "kinematic_cuts.h"
+void Q2_inc(TString inDat, TString inSim, int smeared){
 
-void Q2_inc(TString inDat, TString inSim){
+	//Cuts for MC smeared values
+	const double 	ECUT_pE_min = 3;
+	const double 	ECUT_pE_max = 10.6;
+	const double 	ECUT_Q2_min = 2;
+	const double 	ECUT_Q2_max = 10;
+	const double 	ECUT_W2_min = 2*2;
+	TCut eMom_smeared	= Form("eHit_smeared->getMomentum() > %f && eHit_smeared->getMomentum() < %f",	ECUT_pE_min,		ECUT_pE_max);
+	TCut eQ2_smeared	= Form("eHit_smeared->getQ2() > %f && eHit_smeared->getQ2() < %f",		ECUT_Q2_min,		ECUT_Q2_max);
+	TCut eW_smeared		= Form("eHit_smeared->getW2() > %f",					ECUT_W2_min);
+	TCut inclusive_smeared	= eMom_smeared && eQ2_smeared && eW_smeared;
+
+	bool plotsmeared = false;
+	if (smeared!=0) plotsmeared = true;
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
@@ -38,7 +49,13 @@ void Q2_inc(TString inDat, TString inSim){
 
 		c_Q2->cd(i+1);
 		inTreeDat->Draw(Form("eHit->getQ2() >> Q2_dat_%i",i));
-		inTreeSim->Draw(Form("eHit->getQ2() >> Q2_sim_%i",i));
+		if (plotsmeared)
+		{
+			inTreeSim->Draw(Form("eHit_smeared->getQ2() >> Q2_sim_%i",i),inclusive_smeared);
+		}
+		else {
+			inTreeSim->Draw(Form("eHit->getQ2() >> Q2_sim_%i",i));
+		}
 
 
 		// Simulation scaling only from no pT cut distribution (i.e. from full distribution)
