@@ -46,7 +46,7 @@ void phie_inc(TString inDat, TString inSim, int smeared){
 		inTreeDat->Draw("eHit->getPhi()*180./TMath::Pi() >> phie_dat");
 		if (plotsmeared)
 		{
-			inTreeSim->Draw("eHit_smeared->getPhi()*180./TMath::Pi() >> phie_sim"),inclusive_smeared);
+			inTreeSim->Draw("eHit_smeared->getPhi()*180./TMath::Pi() >> phie_sim",inclusive_smeared);
 		}
 		else {
 			inTreeSim->Draw("eHit->getPhi()*180./TMath::Pi() >> phie_sim");
