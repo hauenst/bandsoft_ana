@@ -49,7 +49,7 @@ void omega_inc(TString inDat, TString inSim){
 
 
 	c_omega->SaveAs("full_omega-inc.pdf");
-	omega_data[0]->SaveAs("data_omega_inc.root");
+	omega_dat[0]->SaveAs("data_omega_inc.root");
 	omega_sim[0]->SaveAs("sim_omega_inc.root");
 	return;
 }

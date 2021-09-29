@@ -10,15 +10,17 @@ then
     mkdir inc_plots10.2
   fi
   cd inc_plots10.2
+  datapath=/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_006*.root
+  simpath=/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root
 
-  root -l -b -q "../pe_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
-  root -l -b -q "../thetae_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
-  root -l -b -q "../phie_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
+  root -l -b -q "../pe_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\")"
 
-  root -l -b -q "../xB_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
-  root -l -b -q "../Q2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
-  root -l -b -q "../W2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
-  root -l -b -q "../omega_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/inclusive/final_inclusive_0065*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.2/final/final_inclusive_sim_10pt2.root\")"
+  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\")"
+  root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\")"
 
   gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=inclusive_compare_10pt2.pdf full_*
 
@@ -31,15 +33,17 @@ then
     mkdir inc_plots10.4
   fi
   cd inc_plots10.4
+  datapath=/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_011*.root
+  simpath=/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root
 
-  root -l -b -q "../pe_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
-  root -l -b -q "../thetae_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
-  root -l -b -q "../phie_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
+  root -l -b -q "../pe_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\")"
 
-  root -l -b -q "../xB_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
-  root -l -b -q "../Q2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
-  root -l -b -q "../W2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
-  root -l -b -q "../omega_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/inclusive/final_inclusive_0115*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.4/final/final_inclusive_sim_10pt4.root\")"
+  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\")"
+  root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\")"
 
   gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=inclusive_compare_10pt4.pdf full_*
 
@@ -52,16 +56,18 @@ then
     mkdir inc_plots10.6
   fi
   cd inc_plots10.6
+  datapath=/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_006*.root
+  simpath=/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root
 
-  root -l -b -q "../pe_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-  root -l -b -q "../thetae_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-  root -l -b -q "../phie_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
+  root -l -b -q "../pe_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\")"
 
-  root -l -b -q "../xB_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-  root -l -b -q "../Q2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-  root -l -b -q "../W2_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-  root -l -b -q "../omega_inc.C(\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/inclusive/final_inclusive_0063*.root\",\"/volatile/clas12/users/segarrae/BAND/v3.1/10.6/final/final_inclusive_sim_10pt6.root\")"
-
+  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\")"
+  root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\")"
+  root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\")"
+  
   gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=inclusive_compare_10pt6.pdf full_*
 
 else
