@@ -33,8 +33,8 @@ void pe_inc(TString inDat, TString inSim, int smeared){
 	TH1D ** pe_dat = new TH1D*[1];
 	TH1D ** pe_sim = new TH1D*[1];
 	for(int i = 0 ; i < 1 ; i++){
-		pe_dat[i] = new TH1D(Form("pe_dat_%i",i),"",30,3,13);
-		pe_sim[i] = new TH1D(Form("pe_sim_%i",i),"",30,3,13);
+		pe_dat[i] = new TH1D(Form("pe_dat_%i",i),"",30,3,9);
+		pe_sim[i] = new TH1D(Form("pe_sim_%i",i),"",30,3,9);
 	}
 
 	// Draw the full pe distribution

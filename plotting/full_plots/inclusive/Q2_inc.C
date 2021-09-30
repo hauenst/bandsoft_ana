@@ -1,4 +1,4 @@
-void Q2_inc(TString inDat, TString inSim, int smeared){
+void Q2_inc(TString inDat, TString inSim, int smeared = 0){
 
 	//Cuts for MC smeared values
 	const double 	ECUT_pE_min = 3;
@@ -10,6 +10,8 @@ void Q2_inc(TString inDat, TString inSim, int smeared){
 	TCut eQ2_smeared	= Form("eHit_smeared->getQ2() > %f && eHit_smeared->getQ2() < %f",		ECUT_Q2_min,		ECUT_Q2_max);
 	TCut eW_smeared		= Form("eHit_smeared->getW2() > %f",					ECUT_W2_min);
 	TCut inclusive_smeared	= eMom_smeared && eQ2_smeared && eW_smeared;
+	TCut extraxB = "eHit->getXb() < 0.45";
+	TCut extraxB_smeared = "eHit_smeared->getXb() < 0.45";
 
 	bool plotsmeared = false;
 	if (smeared!=0) plotsmeared = true;
@@ -31,9 +33,9 @@ void Q2_inc(TString inDat, TString inSim, int smeared){
 
 
 	// Define histograms we want to plot:
-	TH1D ** Q2_dat = new TH1D*[1];
-	TH1D ** Q2_sim = new TH1D*[1];
-	for(int i = 0 ; i < 1 ; i++){
+	TH1D ** Q2_dat = new TH1D*[2];
+	TH1D ** Q2_sim = new TH1D*[2];
+	for(int i = 0 ; i < 2 ; i++){
 		Q2_dat[i] = new TH1D(Form("Q2_dat_%i",i),"",30,2,8);
 		Q2_sim[i] = new TH1D(Form("Q2_sim_%i",i),"",30,2,8);
 	}
@@ -49,12 +51,15 @@ void Q2_inc(TString inDat, TString inSim, int smeared){
 
 		c_Q2->cd(i+1);
 		inTreeDat->Draw(Form("eHit->getQ2() >> Q2_dat_%i",i));
+		inTreeDat->Draw(Form("eHit->getQ2() >> Q2_dat_%i",i+1), extraxB);
 		if (plotsmeared)
 		{
 			inTreeSim->Draw(Form("eHit_smeared->getQ2() >> Q2_sim_%i",i),inclusive_smeared);
+			inTreeSim->Draw(Form("eHit_smeared->getQ2() >> Q2_sim_%i",i+1),inclusive_smeared && extraxB && extraxB_smeared);
 		}
 		else {
 			inTreeSim->Draw(Form("eHit->getQ2() >> Q2_sim_%i",i));
+			inTreeSim->Draw(Form("eHit->getQ2() >> Q2_sim_%i",i+1), extraxB);
 		}
 
 
@@ -63,7 +68,7 @@ void Q2_inc(TString inDat, TString inSim, int smeared){
 		if( i == 0 ) sim_scaling = full_simnorm;
 		//just Histoscaling for now
 		Q2_sim[i]->Scale( sim_scaling );
-
+		Q2_sim[i+1]->Scale( sim_scaling );
 		//Q2_dat[i]->Scale(1./Q_inc);
 		//Q2_sim[i]->Scale(1./L_inc);
 
@@ -79,6 +84,8 @@ void Q2_inc(TString inDat, TString inSim, int smeared){
 	c_Q2->SaveAs("full_Q2-inc.pdf");
 	Q2_dat[0]->SaveAs("data_Q2_inc.root");
 	Q2_sim[0]->SaveAs("sim_Q2_inc.root");
+	Q2_dat[1]->SaveAs("data_Q2_inc_xbcut.root");
+	Q2_sim[1]->SaveAs("sim_Q2_inc_xbcut.root");
 	return;
 }
 

@@ -1,4 +1,4 @@
-void xB_inc(TString inDat, TString inSim, int smeared){
+void xB_inc(TString inDat, TString inSim, int smeared = 0){
 
 	//Cuts for MC smeared values
 	const double 	ECUT_pE_min = 3;
@@ -10,6 +10,8 @@ void xB_inc(TString inDat, TString inSim, int smeared){
 	TCut eQ2_smeared	= Form("eHit_smeared->getQ2() > %f && eHit_smeared->getQ2() < %f",		ECUT_Q2_min,		ECUT_Q2_max);
 	TCut eW_smeared		= Form("eHit_smeared->getW2() > %f",					ECUT_W2_min);
 	TCut inclusive_smeared	= eMom_smeared && eQ2_smeared && eW_smeared;
+	TCut extraxB = "eHit->getXb() < 0.45";
+	TCut extraxB_smeared = "eHit_smeared->getXb() < 0.45";
 
 	bool plotsmeared = false;
 	if (smeared!=0) plotsmeared = true;
@@ -30,9 +32,9 @@ void xB_inc(TString inDat, TString inSim, int smeared){
 	inTreeDat->Add(inDat);
 
 	// Define histograms we want to plot:
-	TH1D ** xB_dat = new TH1D*[1];
-	TH1D ** xB_sim = new TH1D*[1];
-	for(int i = 0 ; i < 1 ; i++){
+	TH1D ** xB_dat = new TH1D*[2];
+	TH1D ** xB_sim = new TH1D*[2];
+	for(int i = 0 ; i < 2 ; i++){
 		xB_dat[i] = new TH1D(Form("xB_dat_%i",i),"",30,0.1,0.7);
 		xB_sim[i] = new TH1D(Form("xB_sim_%i",i),"",30,0.1,0.7);
 	}
@@ -45,12 +47,16 @@ void xB_inc(TString inDat, TString inSim, int smeared){
 
 		c_xB->cd(i+1);
 		inTreeDat->Draw(Form("eHit->getXb() >> xB_dat_%i",i));
+		inTreeDat->Draw(Form("eHit->getXb() >> xB_dat_%i",i+1),extraxB);
 		if (plotsmeared)
 		{
 			inTreeSim->Draw(Form("eHit_smeared->getXb() >> xB_sim_%i",i),inclusive_smeared);
+			inTreeSim->Draw(Form("eHit_smeared->getXb() >> xB_sim_%i",i+1),inclusive_smeared && extraxB && extraxB_smeared);
+
 		}
 		else {
 			inTreeSim->Draw(Form("eHit->getXb() >> xB_sim_%i",i));
+			inTreeSim->Draw(Form("eHit->getXb() >> xB_sim_%i",i+1),extraxB);
 		}
 
 
@@ -58,7 +64,7 @@ void xB_inc(TString inDat, TString inSim, int smeared){
 		double full_simnorm = (double)xB_dat[0]->Integral() / xB_sim[0]->Integral();
 		if( i == 0 ) sim_scaling = full_simnorm;
 		xB_sim[i]->Scale( sim_scaling );
-
+		xB_sim[i+1]->Scale( sim_scaling );
 
 		xB_sim[i]->SetTitle(Form("C_{sim} = %f",sim_scaling));
 		label1D(xB_dat[i],xB_sim[i],"x_{B}","Counts");
@@ -70,6 +76,8 @@ void xB_inc(TString inDat, TString inSim, int smeared){
 	c_xB->SaveAs("full_xB-inc.pdf");
 	xB_dat[0]->SaveAs("data_xB_inc.root");
 	xB_sim[0]->SaveAs("sim_xB_inc.root");
+	xB_dat[1]->SaveAs("data_xB_inc_xbcut.root");
+	xB_sim[1]->SaveAs("sim_xB_inc_xbcut.root");
 	return;
 }
 
