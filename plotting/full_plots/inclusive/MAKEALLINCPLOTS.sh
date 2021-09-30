@@ -18,7 +18,7 @@ then
   root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\",$2)"
 
-  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\",$2)"
+  root -l -b -q "../xB_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\",$2)"
@@ -41,7 +41,7 @@ then
   root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\",$2)"
 
-  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\",$2)"
+  root -l -b -q "../xB_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\",$2)"
@@ -64,7 +64,7 @@ then
   root -l -b -q "../thetae_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../phie_inc.C(\"$datapath\",\"$simpath\",$2)"
 
-  root -l -b -q "../xB_inc.C\"$datapath\",\"$simpath\",$2)"
+  root -l -b -q "../xB_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../Q2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../W2_inc.C(\"$datapath\",\"$simpath\",$2)"
   root -l -b -q "../omega_inc.C(\"$datapath\",\"$simpath\",$2)"
