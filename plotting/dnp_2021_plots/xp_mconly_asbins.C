@@ -14,7 +14,7 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
-	void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratio, TString xlabel, TString ylabel, double ymin , double ymax );
+	void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TString ylabel, double ymin , double ymax );
 
 
 	// Get TChains
@@ -30,10 +30,12 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 	TH1D ** xp_full = new TH1D*[3];
 	TH1D ** xp_asymp = new TH1D*[3];
 	TH1D ** xp_singleratio = new TH1D*[3];
+	TH1D ** xp_ratio_norm = new TH1D*[3];
 	for(int i = 0 ; i < 3 ; i++){
 		xp_full[i] = new TH1D(Form("xp_full_%i",i),"",35,0.1,0.8);
 		xp_asymp[i] = new TH1D(Form("xp_asymp_%i",i),"",35,0.1,0.8);
 		xp_singleratio[i] = new TH1D(Form("xp_singleratio_%i",i),"",35,0.1,0.8);
+		xp_ratio_norm[i] = new TH1D(Form("xp_ratio_norm_%i",i),"",35,0.1,0.8);
 	}
 
 	// Draw the full as distribution
@@ -63,7 +65,7 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 
 		//4-6 pads MC ratios
 		c_xp->cd(4+i);
-		label1D_ratio(xp_full[i],xp_asymp[i],"x^{'}","Full/Asymptotic",0,2);
+		label1D_ratio(xp_full[i],xp_asymp[i],xp_singleratio[i],"x^{'}","Full/Asymptotic",0,2);
 
 		//7-9 pads MC ratios normalized to x' = 0.3
 		c_xp->cd(7+i);
@@ -111,7 +113,7 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	return;
 }
 
-void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratio, TString xlabel, TString ylabel, double ymin , double ymax ){
+void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TString ylabel, double ymin , double ymax ){
 	gStyle->SetOptFit(1);
 
 	TH1D * data_copy = (TH1D*) data->Clone();
@@ -146,8 +148,8 @@ void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratio, TString xlabel, TString y
 		else{
 			data_copy->SetBinContent(bin,ratio);
 			data_copy->SetBinError(bin,error);
-			ratio->SetBinContent(bin,ratio);
-			ratio->SetBinError(bin,error);
+			ratiohist->SetBinContent(bin,ratio);
+			ratiohist->SetBinError(bin,error);
 			cerr << "Full/Asymp: " << xval << " " << ratio << " " << error << "\n";
 		}
 	}
@@ -155,17 +157,17 @@ void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratio, TString xlabel, TString y
 	//data_copy->Divide(sim_copy);
 	//data_copy->SetTitle( sim_copy->GetTitle() );
 	//data_copy->Draw("ep");
-	ratio->SetTitle( sim_copy->GetTitle() );
-	ratio->Draw("ep");
+	ratiohist->SetTitle( sim_copy->GetTitle() );
+	ratiohist->Draw("ep");
 	TLine* line = new TLine(data_copy->GetXaxis()->GetBinCenter(1), 1., data_copy->GetXaxis()->GetBinCenter(data_copy->GetXaxis()->GetNbins()), 1.);
 	line->SetLineWidth(3);
 	line->SetLineColor(2);
 	line->Draw("same");
 
-	ratio->GetYaxis()->SetRangeUser(ymin,ymax);
+	ratiohist->GetYaxis()->SetRangeUser(ymin,ymax);
 
-	ratio->GetXaxis()->SetTitle(xlabel);
-	ratio->GetYaxis()->SetTitle(ylabel);
+	ratiohist->GetXaxis()->SetTitle(xlabel);
+	ratiohist->GetYaxis()->SetTitle(ylabel);
 
 	return;
 }
