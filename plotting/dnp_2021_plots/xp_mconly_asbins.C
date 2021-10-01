@@ -34,10 +34,10 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 	TH1D ** xp_singleratio = new TH1D*[3];
 	TH1D ** xp_ratio_norm = new TH1D*[3];
 	for(int i = 0 ; i < 3 ; i++){
-		xp_full[i] = new TH1D(Form("xp_full_%i",i),"",12,0.2,0.8);
-		xp_asymp[i] = new TH1D(Form("xp_asymp_%i",i),"",12,0.2,0.8);
-		xp_singleratio[i] = new TH1D(Form("xp_singleratio_%i",i),"",12,0.2,0.8);
-		xp_ratio_norm[i] = new TH1D(Form("xp_ratio_norm_%i",i),"",12,0.2,0.8);
+		xp_full[i] = new TH1D(Form("xp_full_%i",i),"",12,0.175,0.775);
+		xp_asymp[i] = new TH1D(Form("xp_asymp_%i",i),"",12,0.175,0.775);
+		xp_singleratio[i] = new TH1D(Form("xp_singleratio_%i",i),"",12,0.175,0.775);
+		xp_ratio_norm[i] = new TH1D(Form("xp_ratio_norm_%i",i),"",12,0.175,0.775);
 	}
 
 	// Draw the full as distribution
@@ -76,7 +76,7 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 		xp_full[i]->SaveAs(Form("xp_dist_fullMC_asbin%i.root",i+1));
 		xp_asymp[i]->SaveAs(Form("xp_dist_asypMC_asbin%i.root",i+1));
 		xp_singleratio[i]->SaveAs(Form("xp_ratio_full-asypMC_asbin%i.root",i+1));
-		xp_ratio_norm[i]->SaveAs(Form("xp_normratio_full-asypMC_asbin%i.root",i+1));						
+		xp_ratio_norm[i]->SaveAs(Form("xp_normratio_full-asypMC_asbin%i.root",i+1));
 	}
 
 
@@ -223,7 +223,7 @@ void label1D_ratio_norm(TH1D* data, TH1D* sim, TH1D* ratiohist, double normbin, 
 			data_copy->SetBinError(bin,error);
 			ratiohist->SetBinContent(bin,ratio);
 			ratiohist->SetBinError(bin,error);
-			cerr << "Full/Asymp normalized to xp bin: " << xval << " " << ratio << " " << error << "\n";
+			cerr << "Full/Asymp(norm): " << xval << " " << ratio << " " << error << "\n";
 		}
 	}
 
