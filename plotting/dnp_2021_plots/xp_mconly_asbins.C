@@ -9,12 +9,14 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 	TCut aScut_sim[3] = {"tag_smeared[nleadindex]->getAs() >= 1.3 && tag_smeared[nleadindex]->getAs() < 1.4",
 				     			"tag_smeared[nleadindex]->getAs() >= 1.4 && tag_smeared[nleadindex]->getAs() < 1.5",
 							"tag_smeared[nleadindex]->getAs() >= 1.5 && tag_smeared[nleadindex]->getAs() < 1.6"};
+	double norm_xpvalue[3] = {0.3,0.3,0.4};
 
 	cerr << "Files used: " << inSim1 << " " << inSim2 << "\n";
 
 	// Define some function used
 	void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel);
 	void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TString ylabel, double ymin , double ymax );
+	void label1D_ratio_norm(TH1D* data, TH1D* sim, TH1D* ratiohist, double normbin, TString xlabel, TString ylabel, double ymin , double ymax );
 
 
 	// Get TChains
@@ -69,6 +71,7 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 
 		//7-9 pads MC ratios normalized to x' = 0.3
 		c_xp->cd(7+i);
+		label1D_ratio_norm(xp_full[i],xp_asymp[i],xp_ratio_norm[i],norm_xpvalue[i],"x^{'}","Full/Asymptotic",0,2);
 	}
 
 
@@ -92,8 +95,8 @@ void label1D(TH1D* data, TH1D* sim, TString xlabel, TString ylabel){
 	data->Draw("p,same");
 
 	for( int bin = 1 ; bin < data->GetXaxis()->GetNbins() ; ++bin ){
-		cerr << "Simfull: " << data->GetBinCenter(bin) << " " << data->GetBinContent(bin) << " " << data->GetBinError(bin) << "\n";
-		cerr << "Simasymp: " << sim->GetBinCenter(bin) << " " << sim->GetBinContent(bin) << " " << sim->GetBinError(bin) << "\n";
+	//	cerr << "Simfull: " << data->GetBinCenter(bin) << " " << data->GetBinContent(bin) << " " << data->GetBinError(bin) << "\n";
+	//	cerr << "Simasymp: " << sim->GetBinCenter(bin) << " " << sim->GetBinContent(bin) << " " << sim->GetBinError(bin) << "\n";
 	}
 
 	double max1 = data->GetMaximum()*1.1;
@@ -143,7 +146,7 @@ void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TStri
 		if( S == 0 ){
 			data_copy->SetBinContent(bin,-1);
 			data_copy->SetBinError(bin,0);
-			cerr << "Full/Asymp: " << xval << " " << -1 << " " << 0 << "\n";
+		//	cerr << "Full/Asymp: " << xval << " " << -1 << " " << 0 << "\n";
 		}
 		else{
 			data_copy->SetBinContent(bin,ratio);
@@ -151,6 +154,70 @@ void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TStri
 			ratiohist->SetBinContent(bin,ratio);
 			ratiohist->SetBinError(bin,error);
 			cerr << "Full/Asymp: " << xval << " " << ratio << " " << error << "\n";
+		}
+	}
+
+	//data_copy->Divide(sim_copy);
+	//data_copy->SetTitle( sim_copy->GetTitle() );
+	//data_copy->Draw("ep");
+	ratiohist->SetTitle( sim_copy->GetTitle() );
+	ratiohist->Draw("ep");
+	TLine* line = new TLine(data_copy->GetXaxis()->GetBinCenter(1), 1., data_copy->GetXaxis()->GetBinCenter(data_copy->GetXaxis()->GetNbins()), 1.);
+	line->SetLineWidth(3);
+	line->SetLineColor(2);
+	line->Draw("same");
+
+	ratiohist->GetYaxis()->SetRangeUser(ymin,ymax);
+
+	ratiohist->GetXaxis()->SetTitle(xlabel);
+	ratiohist->GetYaxis()->SetTitle(ylabel);
+
+	return;
+}
+
+
+void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, double normbin, TString xlabel, TString ylabel, double ymin , double ymax ){
+	gStyle->SetOptFit(1);
+
+	TH1D * data_copy = (TH1D*) data->Clone();
+	TH1D * sim_copy = (TH1D*) sim->Clone();
+
+	data_copy->SetLineColor(1);
+	data_copy->SetLineWidth(3);
+	//data_copy->SetStats(0);
+	cerr << "Sim 1 normbin " << data_copy->FindBin(normbin) << " with content " << data_copy->GetBinContent(data_copy->FindBin(normbin)) << endl;
+	data_copy->Scale(1./data_copy->GetBinContent(data_copy->FindBin(normbin)) );
+
+	sim_copy->SetLineColor(9);
+	sim_copy->SetLineWidth(3);
+	cerr << "Sim 2 normbin " << sim_copy->FindBin(normbin) << " with content " << sim_copy->GetBinContent(sim_copy->FindBin(normbin)) << endl;
+	sim_copy->Scale(1./sim_copy->GetBinContent(sim_copy->FindBin(normbin)) );
+	//sim_copy->SetStats(0);
+	//sim_copy->Scale(data_copy->Integral() / sim_copy->Integral() );
+
+	for( int bin = 1 ; bin < data_copy->GetXaxis()->GetNbins() ; ++bin ){
+		double xval = data_copy->GetBinCenter(bin);
+
+		double D = data_copy->GetBinContent(bin);
+		double S = sim_copy->GetBinContent(bin);
+
+		double Derr = data_copy->GetBinError(bin);
+		double Serr = data_copy->GetBinError(bin);
+
+		double ratio = D/S;
+		double error = sqrt( pow(Derr/S,2) + pow(D/(S*S)*Serr,2) );
+
+		if( S == 0 ){
+			data_copy->SetBinContent(bin,-1);
+			data_copy->SetBinError(bin,0);
+		//	cerr << "Full/Asymp: " << xval << " " << -1 << " " << 0 << "\n";
+		}
+		else{
+			data_copy->SetBinContent(bin,ratio);
+			data_copy->SetBinError(bin,error);
+			ratiohist->SetBinContent(bin,ratio);
+			ratiohist->SetBinError(bin,error);
+			cerr << "Full/Asymp normalized to xp bin: " << xval << " " << ratio << " " << error << "\n";
 		}
 	}
 
