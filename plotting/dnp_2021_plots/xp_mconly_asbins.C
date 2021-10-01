@@ -9,7 +9,7 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 	TCut aScut_sim[3] = {"tag_smeared[nleadindex]->getAs() >= 1.3 && tag_smeared[nleadindex]->getAs() < 1.4",
 				     			"tag_smeared[nleadindex]->getAs() >= 1.4 && tag_smeared[nleadindex]->getAs() < 1.5",
 							"tag_smeared[nleadindex]->getAs() >= 1.5 && tag_smeared[nleadindex]->getAs() < 1.6"};
-	double norm_xpvalue[3] = {0.3,0.3,0.4};
+	double norm_xpvalue[3] = {0.3,0.4,0.4};
 
 	cerr << "Files used: " << inSim1 << " " << inSim2 << "\n";
 
@@ -34,10 +34,10 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 	TH1D ** xp_singleratio = new TH1D*[3];
 	TH1D ** xp_ratio_norm = new TH1D*[3];
 	for(int i = 0 ; i < 3 ; i++){
-		xp_full[i] = new TH1D(Form("xp_full_%i",i),"",35,0.1,0.8);
-		xp_asymp[i] = new TH1D(Form("xp_asymp_%i",i),"",35,0.1,0.8);
-		xp_singleratio[i] = new TH1D(Form("xp_singleratio_%i",i),"",35,0.1,0.8);
-		xp_ratio_norm[i] = new TH1D(Form("xp_ratio_norm_%i",i),"",35,0.1,0.8);
+		xp_full[i] = new TH1D(Form("xp_full_%i",i),"",12,0.2,0.8);
+		xp_asymp[i] = new TH1D(Form("xp_asymp_%i",i),"",12,0.2,0.8);
+		xp_singleratio[i] = new TH1D(Form("xp_singleratio_%i",i),"",12,0.2,0.8);
+		xp_ratio_norm[i] = new TH1D(Form("xp_ratio_norm_%i",i),"",12,0.2,0.8);
 	}
 
 	// Draw the full as distribution
@@ -72,10 +72,16 @@ void xp_mconly_asbins(TString inSim1, TString inSim2){
 		//7-9 pads MC ratios normalized to x' = 0.3
 		c_xp->cd(7+i);
 		label1D_ratio_norm(xp_full[i],xp_asymp[i],xp_ratio_norm[i],norm_xpvalue[i],"x^{'}","Full/Asymptotic",0,2);
+
+		xp_full[i]->SaveAs(Form("xp_dist_fullMC_asbin%i.root",i+1));
+		xp_asymp[i]->SaveAs(Form("xp_dist_asypMC_asbin%i.root",i+1));
+		xp_singleratio[i]->SaveAs(Form("xp_ratio_full-asypMC_asbin%i.root",i+1));
+		xp_ratio_norm[i]->SaveAs(Form("xp_normratio_full-asypMC_asbin%i.root",i+1));						
 	}
 
 
 	c_xp->SaveAs("full_xp_mcratio.pdf");
+
 
 	return;
 }
@@ -176,7 +182,7 @@ void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, TString xlabel, TStri
 }
 
 
-void label1D_ratio(TH1D* data, TH1D* sim, TH1D* ratiohist, double normbin, TString xlabel, TString ylabel, double ymin , double ymax ){
+void label1D_ratio_norm(TH1D* data, TH1D* sim, TH1D* ratiohist, double normbin, TString xlabel, TString ylabel, double ymin , double ymax ){
 	gStyle->SetOptFit(1);
 
 	TH1D * data_copy = (TH1D*) data->Clone();
