@@ -30,8 +30,11 @@ int main( int argc, char** argv){
 		return -1;
 	}
 
-	TFile inFile(argv[1]);
-	TTree * inTree = (TTree*) inFile.Get("tagged");
+	TChain * inTree  = new TChain("tagged");
+	inTree->Add(argv[1]);
+
+//	TFile inFile(argv[1]);
+//	TTree * inTree = (TTree*) inFile.Get("tagged");
 
 	TClonesArray* gen_particles 	= new TClonesArray("genpart");
 	clashit * rec_electron 		= new clashit;
