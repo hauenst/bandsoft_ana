@@ -8,6 +8,7 @@
 #include "TH1.h"
 #include "TCanvas.h"
 #include "TLine.h"
+#include "TChain.h"
 
 #include "genpart.h"
 #include "clashit.h"
@@ -24,14 +25,23 @@ void setError( double * err , TH1D * rec , TH1D * gen );
 
 int main( int argc, char** argv){
 
-	if( argc != 2 ){
+	if( argc < 2 ){
 		cerr << "Incorrect number of arguments. Please use:\n";
-		cerr << "./code [Sim File]\n";
+		cerr << "./code [Sim Files]\n";
 		return -1;
 	}
 
+	if (argc > 2) {
+		cout << "Added " << argc-2 << " files" << endl;
+	}
+
 	TChain * inTree  = new TChain("tagged");
-	inTree->Add(argv[1]);
+
+	for (int i = 1; i < argc; i++) {
+		cout << "Add file " << argv[i] << endl;
+		inTree->Add(argv[i]);
+	}
+
 
 //	TFile inFile(argv[1]);
 //	TTree * inTree = (TTree*) inFile.Get("tagged");
@@ -120,7 +130,7 @@ int main( int argc, char** argv){
 
 	outFile->Close();
 
-	inFile.Close();
+//	inFile.Close();
 	return 1;
 }
 
