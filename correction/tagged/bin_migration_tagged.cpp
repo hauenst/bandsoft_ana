@@ -29,7 +29,7 @@ int main( int argc, char** argv){
 		cerr << "./code [Sim File]\n";
 		return -1;
 	}
-	
+
 	TFile inFile(argv[1]);
 	TTree * inTree = (TTree*) inFile.Get("tagged");
 
@@ -47,7 +47,7 @@ int main( int argc, char** argv){
 	inTree->SetBranchAddress("nHits"		, &rec_neutrons			);
 	inTree->SetBranchAddress("nleadindex"		, &nleadindex			);
 	inTree->SetBranchAddress("Ebeam"		, &Ebeam			);
-	
+
 	TFile * outFile = new TFile("migcorrection_tagged.root","RECREATE");
 	TH1D **** h4_gen_as 	= new TH1D***[bins_Q2];
 	TH1D **** h4_rec_as	= new TH1D***[bins_Q2];
@@ -64,7 +64,7 @@ int main( int argc, char** argv){
 			}
 		}
 	}
-	
+
 
 	for( int event = 0 ; event < inTree->GetEntries() ; ++event ){
 		gen_particles	->Clear();
@@ -80,7 +80,7 @@ int main( int argc, char** argv){
 		taghit * rec_tag	= (taghit*)  rec_tagged->At(nleadindex);
 		if( rec_tag->getMomentumN().Mag() < 0.3 ) continue;
 		double rec_As		= rec_tag->getAs();
-		double rec_Pt 		= rec_tag->getPt().Mag();
+		double rec_Pt 	= rec_tag->getPt().Mag();
 		double rec_Q2		= rec_electron->getQ2();
 		double rec_Xb		= rec_electron->getXb();
 
@@ -103,7 +103,7 @@ int main( int argc, char** argv){
 	TCanvas ** c_Q2 = new TCanvas*[bins_Q2];
 	for( int i = 0 ; i < bins_Q2 ; ++i ){ // loop over Q2 bins
 		c_Q2[i] = new TCanvas(Form("c_Q2_%i",i),"",1200,1200);
-		
+
 		c_Q2[i]->Divide( bins_Pt, bins_Xb );
 		for( int j = 0 ; j < bins_Pt ; ++j){ // loop over Pt bins
 			for( int k = 0 ; k < bins_Xb ; ++k ){ // loop over Xb bins
@@ -150,10 +150,10 @@ int main( int argc, char** argv){
 void calculate_AsPt( double & As, double & Pt , const double Ebeam, genpart * const electron, genpart * const neutron ){
 
 	TVector3 	beamVec(0,0,Ebeam);
-	TVector3	eVec; 
+	TVector3	eVec;
 	eVec.SetMagThetaPhi( electron->getMomentum(), electron->getTheta(), electron->getPhi() );
 	TVector3	qVec; qVec = beamVec - eVec;
-	TVector3	nVec; 
+	TVector3	nVec;
 	nVec.SetMagThetaPhi( neutron->getMomentum(), neutron->getTheta(), neutron->getPhi() );
 	nVec.Unit();
 
@@ -193,7 +193,7 @@ void calculate_AsPt( double & As, double & Pt , const double Ebeam, genpart * co
 }
 
 void fillHist( double Q2, double Pt, double Xb, double As, TH1D**** hist ){
-	
+
 
 	// If it's larger than max Q2 or smaller than min Q2, return
 	if( Q2 > Q2Bins[bins_Q2] 	) return;
@@ -203,7 +203,7 @@ void fillHist( double Q2, double Pt, double Xb, double As, TH1D**** hist ){
 	int this_bin_q2 = -1;
 	int this_bin_pt = -1;
 	int this_bin_xb = -1;
-	
+
 	for( int q2_bin = bins_Q2-1 ; q2_bin >= 0; --q2_bin ){
 		if( Q2 > Q2Bins[q2_bin] ) this_bin_q2 = q2_bin;
 		if( this_bin_q2 != -1 ) break;
@@ -231,7 +231,7 @@ void fillHist( double Q2, double Pt, double Xb, double As, TH1D**** hist ){
 }
 
 void setError( double * err , TH1D * rec , TH1D * gen ){
-	
+
 	for( int bin = 1 ; bin < rec->GetXaxis()->GetNbins(); ++bin ){
 
 		double r = rec->GetBinContent(bin);
