@@ -20,6 +20,7 @@
 
 using std::cerr;
 using std::cout;
+using std::endl;
 void calculate_AsPt( double & As, double & Pt , double & Xp, const double Ebeam, genpart * const electron, genpart * const neutron );
 void setError( double * err , TH1D * rec , TH1D * gen );
 
@@ -32,7 +33,7 @@ int main( int argc, char** argv){
 	}
 
 	if (argc > 2) {
-		cout << "Added " << argc-2 << " files" << endl;
+		cout << "Added " << argc-1 << " files" << endl;
 	}
 
 	TChain * inTree  = new TChain("tagged");
@@ -127,7 +128,12 @@ int main( int argc, char** argv){
 
 
 	}//end event loop
-
+	outFile->cd();
+	h1_neutron_mom_rec->Write();
+	xp_gen_cutongen->Write();
+	xp_rec_cutongen->Write();
+	xp_gen_cutonrec->Write();
+	xp_rec_cutonrec->Write();
 	outFile->Close();
 
 //	inFile.Close();
